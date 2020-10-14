@@ -8,8 +8,12 @@ cat > $SCRIPT <<EOT
 #!/bin/bash
 # assure that docker will be started everytime the machine reboots
 systemctl enable docker
+
+# create directory on host to persist the container content
+HOST_CWLAB_DIR=/var/lib/cwlab
+mkdir -p \$HOST_CWLAB_DIR
 # start container
-docker run --name cwlab -d --restart=always -p 80:80 nginx:latest
+docker run --name cwlab -v \$HOST_CWLAB_DIR:/cwlab -d --restart=always -p 80:5000 compepigen/cwlab:dev
 EOT
 
 chmod +x $SCRIPT
