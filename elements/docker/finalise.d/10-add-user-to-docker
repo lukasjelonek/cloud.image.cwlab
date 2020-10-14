@@ -1,0 +1,5 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+sed -i 's/groups: \[\(.*\)\]/groups: [\1, docker]/' /etc/cloud/cloud.cfg

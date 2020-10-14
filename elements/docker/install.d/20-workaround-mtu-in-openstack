@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eu
+set -o pipefail
+
+
+mkdir -p /etc/systemd/system/docker.service.d/
+cat > /etc/systemd/system/docker.service.d/set_mtu.conf <<EOT
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H fd:// --mtu=1450
+EOT

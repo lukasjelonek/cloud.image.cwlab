@@ -1,0 +1,30 @@
+# The name of the cloud image will be created from the name and the version.
+name: cwlab
+version: "0.1"
+maintainers: [Lukas Jelonek - lukas.jelonek@computational.bio.uni-giessen.de]
+
+# The description will be used for generated websites
+description: Image for spawning a cwlab instance
+# A list of installed tools worth mentioning. 
+# Will be used as documentation, e.g. on a homepage
+tools: [cwlab, docker]
+
+# A list of tags to classify images. 
+tags: [ubuntu, workflows]
+
+# Information needed for the execution of diskimage-builder
+dib:
+    # architecture of the image
+    architecture: amd64
+    # list of elements to include in the image
+    elements: [ubuntu, vm, docker, cwlab]
+    # package names that should be installed, -p in dib
+    packages: []
+    environment:
+      DIB_RELEASE: focal
+
+# Information needed for image deployment
+deploy:
+    min_cpu: 1
+    min_ram: 256 #MB
+    min_hd: 2  #GB
