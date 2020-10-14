@@ -6,7 +6,10 @@ mkdir -p /var/lib/cloud/scripts/per-instance/
 SCRIPT=/var/lib/cloud/scripts/per-instance/10-start-cwl-docker
 cat > $SCRIPT <<EOT
 #!/bin/bash
-docker run -d --restart=always -p 80:80 nginx:latest
+# assure that docker will be started everytime the machine reboots
+systemctl enable docker
+# start container
+docker run --name cwlab -d --restart=always -p 80:80 nginx:latest
 EOT
 
 chmod +x $SCRIPT
