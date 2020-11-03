@@ -1,0 +1,41 @@
+## deploys cwlab as a docker container
+# Installs docker if not available
+# Tested with ubuntu 18.04
+- hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+    # the port to access cwlab on the host system
+    exposed_port: 80
+    # the path on the host system to store the cwlab data
+    data_volume_path: /home/ubuntu/cwlab-data/
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+      become: yes
+    - name: Install docker.io package
+      apt:
+        name: docker.io
+      become: yes
+    - name: Add ubuntu user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+      become: yes
+    - name: Install docker python dev package
+      apt:
+        name: python3-docker
+      become: yes
+    - name: Launch cwlab container
+      community.general.docker_container:
+        name: cwlab
+        image: compepigen/cwlab:dev
+        ports:
+          - "{{ exposed_port }}:5000"
+        volumes: 
+          - "{{ data_volume_path }}:/data"
+        restart_policy: always
+        user: 1000:1000
+        recreate: yes
+        container_default_behavior: no_defaults
